@@ -8,8 +8,8 @@
         <span style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #D1D5DB; pointer-events: none;">
             <i class="fas fa-search" style="font-size: 14px;"></i>
         </span>
-        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search Message Report" 
-               style="width: 260px; padding: 8px 40px 8px 20px; border: 1px solid #E5E7EB; border-radius: 9999px; background-color: #ffffff; outline: none; font-size: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+        <input type="text" name="q" value="{{ request('q') }}" placeholder="Search Message Report" 
+               class="report-search-bar">
     </form>    
 </div>
 <table class="table-auto w-full border">
@@ -32,10 +32,20 @@
             <td class="px-4 py-2 border">{{ $report->id }}</td>
             <td class="px-4 py-2 border">{{ class_basename($report->reported_content_type) }}</td>
             <td class="px-4 py-2 border">
-                @if($report->reported_content_id)
-                <a href="{{ route('chat.pages.chat', ['id' => encrypt($report->reported_content_id)]) }}" 
+                @if($report->message)
+                @php
+        // メッセージの相手を判定（自分が送信者か受信者か）
+                 $otherUserId = $report->message->user_id === auth()->id()
+                    ? $report->message->to_user_id
+                    : $report->message->user_id;
+                @endphp
+
+                <a href="{{ route('chat.pages.chat', [
+                'id' => encrypt($otherUserId),
+                'message_id' => $report->reported_content_id
+                ]) }}"
                 class="text-indigo-600 hover:text-indigo-800 font-bold flex items-center gap-1">
-                <span>{{ $report->reported_content_id }}</span> 
+                <span>{{ $report->reported_content_id }}</span>
                 </a>
                 @else
                 <span class="text-gray-400 text-xs">No Data</span>

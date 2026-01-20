@@ -36,7 +36,11 @@
                 @foreach($users as $user)
                 <tr class="hover:bg-gray-50/50">
                     <td class="px-4 py-2 border border-gray-200 text-sm">{{ $user->id }}</td>
-                    <td class="px-4 py-2 border border-gray-200 text-sm">{{ $user->name }}</td>
+                    <td class="px-4 py-2 border border-gray-200 text-sm">{{ $user->name }}
+                        @if($user->is_admin)
+                         <i class="fas fa-shield-alt"></i>
+                        @endif
+                    </td>
                     <td class="px-4 py-2 border border-gray-200 text-sm text-gray-500">
                         <a href="{{ route('profile.show', ['user_id' => encrypt($user->id)]) }}" class="text-cyan-600 hover:underline">
                             {{ $user->profile->handle }}
@@ -60,21 +64,21 @@
                     </td>
                     
                     {{-- ・・・ --}}
-                    <td class="px-4 py-2 border border-gray-200 text-center relative">
+                    <td class="px-4 py-2 border border-r-0 text-center relative">
                         <div x-data="{ open: false }" class="relative inline-block text-left">
                             
-                            <button @click="open = !open" type="button" 
+                            <button @click.stop="open = !open" type="button" 
                                     class="btn-ellipsis">
                                 <i class="fa-solid fa-ellipsis"></i>
                             </button>
                     
                             {{-- dropdown menu --}}
-                            <div x-show="open" @click.away="open = false" 
+                            <div x-show="open" @click.away="open = false" x-cloak
                                  x-transition:enter="transition ease-out duration-100"
                                  x-transition:enter-start="opacity-0 scale-95"
                                  x-transition:enter-end="opacity-100 scale-100"
                                  class="dropdown-menu-custom absolute right-0 mt-2 w-44 bg-white z-50 py-2 shadow-xl"
-                                 style="display: none;">
+                                 >
                                 
                                 @if($user->trashed())
                                     <form action="{{ route('admin.users.restore', $user->id) }}" method="POST">
@@ -108,6 +112,22 @@
                                         </button>
                                     </form>
                                 @endif
+                                @if(!$user->is_admin)
+                                 <form action="{{ route('admin.users.makeAdmin', $user->id) }}" method="POST">
+                                 @csrf
+                                <button type="submit" class="dropdown-item text-purple-600 hover:bg-purple-50">
+                                 <i class="fas fa-user-shield mr-2"></i>Make Admin
+                                 </button>
+                                 </form>
+                                @else
+                                <form action="{{ route('admin.users.removeAdmin', $user->id) }}" method="POST">
+                                  @csrf
+                                 <button type="submit" class="dropdown-item text-gray-600 hover:bg-gray-50">
+                                 <i class="fas fa-user mr-2"></i>Remove Admin
+                                 </button>
+                                 </form>
+                                @endif
+
                             </div>
                         </div>
                     </td>

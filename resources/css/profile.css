@@ -1,0 +1,30 @@
+/*  Report Modal */
+
+.report-avatar {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.hidden {
+    display: none;
+}
+
+#report_user_name {
+    font-size: 1.2em;
+}
+
+#report_user_avatar_wrapper strong {
+    font-size: 0.8em;
+}
+
+.report-target-label {
+    font-size: 0.8em;
+}
+
+.report-target-name {
+    font-size: 1.2em;
+}
+

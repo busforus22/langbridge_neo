@@ -30,7 +30,7 @@ return [
     //ログインページ
     'welcome' => 'Welcome to LangBridge',
     //ホーム
-    'learning_journey' => 'Learing Journey',
+    'learning_journey' => 'Learning Journey',
     'recent_chats' => 'Recent Chats',
     'suggested_users' => 'Suggested Users',
     'start_chat' => 'Start Chat',
@@ -83,5 +83,33 @@ return [
     'incorrect' => 'Incorrect',
     'quiz_result' => 'Vocabulary Quiz Result',
     'quiz_try_again' => 'Try Again',
-    'go_list' => 'Back to List'
+    'go_list' => 'Back to List',
+    //設定
+    'user_settings' => 'User Settings',
+    'personal_information' => 'Personal Information',
+    'personal_information_visibility' => 'Personal Information Visibility',
+    'hide_age' => 'Hide Age',
+    'hide_country' => 'Hide Country',
+    'hide_region' => 'Hide Region',
+    'this_information_will_be_visible_on_your_public_profile_if_unchecked' => 'If unchecked, this information will be visible on your public profile.',
+    'search_settings' => 'Search Settings',
+    'hide_my_profile_from_search_results' => 'Hide my profile from search results',
+    'prevent_your_profile_from_appearing_in_user_searches_or_suggested_connections' => 'Prevent your profile from appearing in user searches or suggested connections.',
+    'save_changes' => 'Save Changes',
+    'if_you_wish_to_delete_your_account_please_click_the_button_below' => 'If you wish to delete your account, please click the button below.',
+    'delete_account' => 'Delete Account',
+    //プロフィール
+    'profile' => 'Profile',
+    'nickname' => 'Nickname',
+    'japanese level' => 'Japanese Level',
+    'age' => 'Age',
+    'region' => 'Region',
+    'bio' => 'Bio',
+    'handle' => 'Handle',
+    'english level' => 'English Level',
+    'country' => 'Country',
+    'profile_interests' => 'Interests',
+    'edit' => 'Edit',
+    //プロフィール編集
+    'edit_profile' => 'Edit Profile'
 ];

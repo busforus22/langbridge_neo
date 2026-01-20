@@ -25,7 +25,7 @@
                     <br>
 
                     <!-- 単語リストへ -->
-                    <a href="{{ route('vocabulary.index') }}" class="btn btn-secondary btn-lg">
+                    <a href="{{ route('vocabulary.index') }}" class="btn btn-yellow btn-lg">
                         {{ __('messages.go_list') }}
                     </a>
 

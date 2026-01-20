@@ -192,10 +192,11 @@ class ChatController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        // save report
-        $filePath = null;
+        // save report (base64方式)
+        $fileBase64 = null;
         if ($request->hasFile('file')) {
-            $filePath = $request->file('file')->store('reports', 'public');
+            $uploadedFile = $request->file('file');
+            $fileBase64 = 'data:' . $uploadedFile->getMimeType() . ';base64,' . base64_encode(file_get_contents($uploadedFile));
         }
 
         Report::create([
@@ -203,7 +204,7 @@ class ChatController extends Controller
             'category' => 'message',
             'violation_reason_id' => $request->violation_reason_id,
             'detail' => $request->detail,
-            'file' => $filePath,
+            'file' => $fileBase64,
             'reported_content_id' => $id,
             'reported_content_type' => \App\Models\Message::class,
             'action_status' => 'pending',

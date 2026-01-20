@@ -1,8 +1,8 @@
 @extends('layouts.auth')
 
 @section('content')
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
-    <div class="card shadow-sm rounded-4 border-0 p-4" style="width: 100%; max-width: 420px; background-color: #fff;">
+<div class="container d-flex justify-content-center align-items-center" >
+    <div class="card login-card p-4 mt-5">
                 <div class="text-center mb-4">
                     <h2 class="mt-2 fw-semibold">Welcome to LangBridge</h2>
                 </div>
@@ -10,9 +10,12 @@
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
-                        <div class="input-group mb-3">
-                            <span class="input-group-text bg-white"><i class="fa-solid fa-envelope"></i></span>
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="email" required autocomplete="email" autofocus>
+                        <div class="mb-3 ">
+                           
+                            <div class="cute-input-wrapper mb-3">
+                                <i class="fa-solid fa-envelope cute-icon"></i>
+                            {{-- <span class="input-group-text bg-white border-0"><i class="fa-solid fa-envelope cute-icon"></i></span> --}}
+                            <input id="email" type="email" class="form-control cute-input ps-5 @error('email') is-invalid @enderror" name="email" placeholder="email" required autocomplete="email" autofocus>
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -21,9 +24,10 @@
                                 @enderror
                         </div>
 
-                        <div class="input-group mb-3">
-                            <span class="input-group-text bg-white"><i class="fa-solid fa-key"></i></span>
-                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="password" required autocomplete="current-password">
+                        <div class=" mb-3 ">                          
+                          <div class="cute-input-wrapper mb-2">
+                            <i class="fa-solid fa-key cute-icon"></i>  
+                            <input id="password" type="password" class="form-control cute-input ps-5 @error('password') is-invalid @enderror" name="password" placeholder="password" required autocomplete="current-password">
 
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
@@ -36,19 +40,21 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
-                                    <label class="form-check-label" for="remember">
+                                    <label class="form-check-label mx-2 mt-1" for="remember">
                                         {{ __('Remember Me') }}
                                     </label>
                                 </div>
+                            
+                                <br>
                                 @if (Route::has('password.request'))
-                                <a class="text-decoration-none" href="{{ route('password.request') }}">
+                                <a class="text-decoration-none mt-1" href="{{ route('password.request') }}">
                                     Forgot Password?
                                 </a>
                             @endif
                         </div>
 
                         <!-- login button -->
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn login-btn w-100">
                                     {{ __('Login') }}
                                 </button>
 

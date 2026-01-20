@@ -30,6 +30,14 @@
         <i class="fa-solid fa-cog fa-lg"></i>
     </a>
 
+    <!-- admin icon -->
+    @if(auth()->check() && auth()->user()->is_admin)
+        <a class="nav-link" href="{{ route('admin.users.index') }}">
+            <i class="fa-solid fa-user-shield"></i>
+        </a>
+@endif
+
+
     <!-- 右にスライドで出るメニュー -->
     <div class="collapse position-absolute menu-size"
          id="sidebarMenuContent">

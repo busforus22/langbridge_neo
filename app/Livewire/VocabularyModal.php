@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use Livewire\Attributes\On;
 use App\Models\Vocabulary;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,7 +14,9 @@ class VocabularyModal extends Component
     public $vocabularyId = null; // 編集時は既存の単語IDを入れる
     public $isOpen = false;      // モーダル表示フラグ
 
-    protected $listeners = ['openVocabularyModal' => 'open'];
+    protected $listeners = [
+        'openVocabularyModal' => 'open',
+    ];
 
     // モーダルを開く
     public function open($front = '', $back = '', $vocabularyId = null, $note = '')

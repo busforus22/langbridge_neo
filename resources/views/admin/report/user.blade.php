@@ -7,12 +7,12 @@
         <span style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #D1D5DB; pointer-events: none;">
             <i class="fas fa-search" style="font-size: 14px;"></i>
         </span>
-        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search User Report" 
-               style="width: 260px; padding: 8px 40px 8px 20px; border: 1px solid #E5E7EB; border-radius: 9999px; background-color: #ffffff; outline: none; font-size: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+        <input type="text" name="q" value="{{ request('q') }}" placeholder="Search User Report" 
+               class="report-search-bar">
     </form>    
 </div>
-
-<table class="table-auto w-full border">
+<div class="table-wrapper">
+<table class="admin-table">
     <thead>
         <tr class="report-title">
             <th class="px-4 py-2 border">ID</th>
@@ -43,10 +43,21 @@
             </td>
             <td class="px-4 py-2 border">{{ $report->violation_reason_id }}</td>
             <td class="px-4 py-2 border">{{ $report->detail }}</td>
-            <td class="px-4 py-2 border">{{ $report->file }}</td>
+            <td class="px-4 py-2 border">
+                @if(!empty($report->file))  
+            <a href="{{ asset('storage/' . $report->file)}}" 
+             target="_blank" 
+             class="text-gray-600 hover:text-blue-500 transition-colors"
+             title="View attached file">
+            <i class="fa-solid fa-paperclip"></i>
+            </a>
+            @else
+            <span class="text-gray-300">-</span>
+            @endif
+            </td>
             <td class="px-4 py-2 border">{{ $report->created_at }}</td>
             <td class="px-4 py-2 border">{{ $report->reporter->profile->handle }}</td>
-            <td>
+            <td class="px-4 py-2 border">
 
                 @if(stripos($report->reported_content_type, 'user') !== false)
     <form action="{{ route('admin.reports.action', $report->id) }}" method="POST">
@@ -88,4 +99,5 @@
         @endforeach
     </tbody>
 </table>
+</div>
 @endsection

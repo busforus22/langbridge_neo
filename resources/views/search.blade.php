@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 
 <h1>Profile Search</h1>
@@ -24,24 +23,24 @@
 <hr>
 
 <!--  Results Display -->
-@forelse ($users as $profile)
+@forelse($users as $user)
 <div style="margin-bottom: 1em;">
     <a href="#">
-        <strong>{{ $profile->handle }}</strong>
+        <strong>{{ $user->handle }}</strong>
     </a><br>
 
-    @if($profile->nickname)
-    <div><strong>Nickname:</strong> {{ $profile->nickname }}</div>
+    @if($user->nickname)
+    <div><strong>Nickname:</strong> {{ $user->nickname }}</div>
     @endif
 
-    @if($profile->bio)
-    <div><strong>Bio:</strong> {{ $profile->bio }}</div>
+    @if($user->bio)
+    <div><strong>Bio:</strong> {{ $user->bio }}</div>
     @endif
 
     <div style="margin-top: 5px;">
-        @foreach($profile->user->interests as $i)
+        @foreach($user->user->interests as $interest)
         <span style="display: inline-block; background: #eef; padding: 2px 6px; margin: 2px; border-radius: 4px;">
-            {{ $i->name }}
+            {{ $interest->name }}
         </span>
         @endforeach
     </div>

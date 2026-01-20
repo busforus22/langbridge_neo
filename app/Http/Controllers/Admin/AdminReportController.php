@@ -12,24 +12,60 @@ class AdminReportController extends Controller
 {
     /** report index */
     //users
-    public function users()
-    {
-        $reports = Report::where('reported_content_type', User::class)
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+    public function users(Request $request)
+{
+    $query = Report::where('reported_content_type', User::class)
+        ->with('reporter.profile');
 
-        return view('admin.report.user', compact('reports'));
+    if ($request->filled('q')) {
+        $keyword = $request->q;
+
+        // Report 自体の ID や content_id は残す（必要なら）
+        $query->where(function ($q) use ($keyword) {
+            $q->where('id', $keyword)
+              ->orWhere('reported_content_id', $keyword)
+              ->orWhere('detail', 'LIKE', "%{$keyword}%");
+        
+
+        // Reporter の handle のみ検索
+        $q->orWhereHas('reporter.profile', function ($q2) use ($keyword) {
+            $q2->where('handle', 'LIKE', "%{$keyword}%");
+        });
+    });
     }
+
+    $reports = $query->orderBy('created_at', 'desc')->paginate(10);
+
+    return view('admin.report.user', compact('reports'));
+}
 
     // message
-    public function messages()
-    {
-        $reports = Report::where('reported_content_type', \App\Models\Message::class)
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+    public function messages(Request $request)
+{
+    $query = Report::where('reported_content_type', Message::class)
+        ->with(['reporter.profile', 'message']);
 
-        return view('admin.report.message', compact('reports'));
+    if ($request->filled('q')) {
+        $keyword = $request->q;
+
+        $query->where(function ($q) use ($keyword) {
+            $q->where('id', $keyword)
+              ->orWhere('reported_content_id', $keyword)
+              ->orWhere('detail', 'LIKE', "%{$keyword}%");
+        
+
+        // Reporter の handle 検索
+        $q->orWhereHas('reporter.profile', function ($q2) use ($keyword) {
+            $q2->where('handle', 'LIKE', "%{$keyword}%");
+        });
+    });
     }
+
+    $reports = $query->orderBy('created_at', 'desc')->paginate(10);
+
+    return view('admin.report.message', compact('reports'));
+}
+
 
     /** Action to report */
     public function action(Request $request, $id){

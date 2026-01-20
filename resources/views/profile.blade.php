@@ -2,11 +2,12 @@
 
 @push('scripts')
 <script src="{{ asset('js/translate.js') }}" defer></script>
+<script src="{{ asset('js/report.js') }}" defer></script>
 @endpush
 
 @section('content')
 <div class="container">
-    <h2 class="text-center logo-title"><img src="{{ asset('images/logo.png') }}" alt="Site Logo" class="logo-img">Profile</h2>
+    <h2 class="text-center logo-title"><img src="{{ asset('images/logo.png') }}" alt="Site Logo" class="logo-img">{{ __('messages.profile') }}</h2>
     <div class="profile-wrapper">
     <div class="profile-top">
         <div class="avatar-section">
@@ -28,23 +29,23 @@
         </div>
         <div class="input-columns">
         <div class="form-group">
-            <label>Nickname</label>
+            <label>{{ __('messages.nickname') }}</label>
             <div class="profile-value">{{ $profile->nickname }}</div>
         </div>
         <div class="form-group">
-            <label>Handle</label>
+            <label>{{ __('messages.handle') }}</label>
             <div class="profile-value">{{ $profile->handle }}</div>
         </div>
         <div class="form-group">
-            <label>Japanese level</label>
+            <label>{{ __('messages.japanese level') }}</label>
             <div class="profile-value">{{ $profile->JP_level_text }}</div>
         </div>
         <div class="form-group">
-            <label>English level</label>
+            <label>{{ __('messages.english level') }}</label>
             <div class="profile-value">{{ $profile->EN_level_text }}</div>
         </div>
         <div class="form-group">
-            <label>Age</label>
+            <label>{{ __('messages.age') }}</label>
             <div>
             @if($user->profile->age_hidden)
             <span class="text-muted">Private</span>
@@ -54,7 +55,7 @@
         </div>
         </div>
         <div class="form-group">
-            <label>Country</label>
+            <label>{{ __('messages.country') }}</label>
             <div>
             @if($user->profile->country_hidden)
             <span class="text-muted">Private</span>
@@ -64,7 +65,7 @@
         </div>
         </div>
         <div class="form-group">
-            <label>Region</label>
+            <label>{{ __('messages.region') }}</label>
             <div>
             @if($user->profile->region_hidden)
             <span class="text-muted">Private</span>
@@ -75,7 +76,7 @@
         </div>
         <div class="form-group empty-cell"></div>
         <div class="form-group bio-group">
-            <label>Bio</label>
+            <label>{{ __('messages.bio') }}</label>
             <button id="translate-btn" class="btn btn-sm btn-outline-secondary">
                 <i class="fa fa-language"></i>
             </button>
@@ -87,11 +88,11 @@
 </div>
 
 <div class="interest-section">
-    <div class="interest-title">Interest</div>
+    <div class="interest-title">{{ __('messages.profile_interests') }}</div>
     <div class="interests-grid">
         @foreach($interests as $interest)
             <div class="interest-card {{ $user->interests->pluck('id')->contains($interest->id) ? 'selected' : '' }}">
-                <div class="interest-card-content">{{ $interest->name }}</div>
+                <div class="interest-card-content">{{ __('messages.interests.' . $interest->id) }}</div>
             </div>
         @endforeach
     </div>
@@ -101,7 +102,7 @@
        
             <div>
         @if (auth()->id() === $profile->user_id)
-            <a href="{{ route('profile.edit') }}" class="edit-btn btn-outline-primary btn-sm" >Edit</a>
+            <a href="{{ route('profile.edit') }}" class="edit-btn btn-outline-primary btn-sm" >{{ __('messages.edit') }}</a>
         @endif
     </div>
 </div>
@@ -128,20 +129,20 @@
                         <!-- message image (if any) -->
                         <span id="report_user_avatar_wrapper" class="me-3">
                             <img id="report_user_avatar" src=""
-                            class="rounded-circle"
-                                 style="width:60px; height:60px; object-fit:cover; border:2px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">                    
+                            class="rounded-circle report-avatar">
+                                           
                         </span>
                         <!-- message content -->
                         <div>
-                            <strong class="text-muted d-block" style="font-size: 0.8em;">Target User</strong>
-                            <p id="report_user_name" class="mb-0 fw-bold" style="font-size:1.2em;"></p>
+                            <strong class="text-muted d-block report-target-label">Target User</strong>
+                            <p id="report_user_name" class="mb-0 fw-bold report-target-name"></p>
                         </div>
                     </div>
                     <p class="text-center">Are you sure you want to report this user?</p>
                 </div>
 
                 <!-- Step 2: Details -->
-                <div id="report-step-2" style="display:none;">
+                <div id="report-step-2" class="hidden">
                     <div class="mb-3">
                         <div class="form-label mb-3 fw-bold">Please select a reason</div>
                         <select id="report_reason" name="violation_reason_id" class="form-select" required>
@@ -165,7 +166,7 @@
                 </div>
 
                 <!-- Step 3: Submitted -->
-                <div id="report-step-3" style="display:none;">
+                <div id="report-step-3" class="hidden">
                     <p class="fw-bold">Your report has been submitted.</p>
                     <p class="mt-1"> Thank you for your cooperation!</p>
                 </div>
@@ -180,13 +181,13 @@
                 </div>
 
                 <!-- Step 2 buttons -->
-                <div id="report-footer-2" style="display:none;">
+                <div id="report-footer-2" class="hidden">
                     <button type="button" class="btn btn-secondary me-2" id="report-back-2">Back</button>
                     <button type="button" class="btn btn-danger" id="report-submit-2">Report</button>
                 </div>
 
                 <!-- Step 3 buttons -->
-                <div id="report-footer-3" style="display:none;">
+                <div id="report-footer-3" class="hidden">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -194,121 +195,6 @@
     </div>
 </div>
 
-<script>
-function openUserReportModal(userId, userName = '', userAvatar = '') {
-    document.getElementById('report_target_id').value = userId;
-
-    
-    document.getElementById('report_user_name').textContent = userName;
-
-    
-    const avatarWrapper = document.getElementById('report_user_avatar_wrapper');
-    const avatarTag = document.getElementById('report_user_avatar');  
-    if (userAvatar && userAvatar.trim().length > 0) {
-        avatarTag.src = userAvatar;
-        avatarWrapper.style.display = 'block'; // wrapperを表示
-    } else {
-        avatarTag.src = '';
-        avatarWrapper.style.display = 'none'; // なければ非表示
-    }
-
-    // reset form fields and steps
-    document.getElementById('report_reason').value = '';
-    document.getElementById('report_details').value = '';
-    document.getElementById('report_file').value = '';
-    document.getElementById('report-step-1').style.display = 'block';
-    document.getElementById('report-footer-1').style.display = 'flex';
-    document.getElementById('report-step-2').style.display = 'none';
-    document.getElementById('report-footer-2').style.display = 'none';
-    document.getElementById('report-step-3').style.display = 'none';
-    document.getElementById('report-footer-3').style.display = 'none';
-
-    const modal = new bootstrap.Modal(document.getElementById('reportModal'));
-    modal.show();
-}
-
-    // close modal (for Bootstrap)
-    function closeReportModal() {
-        var modal = bootstrap.Modal.getInstance(document.getElementById('reportModal'));
-        if (modal) modal.hide();
-    }
-
-    // report modal step navigation
-    document.addEventListener ('DOMContentLoaded', function () {
-        const step1 = document.getElementById('report-step-1');
-        const step2 = document.getElementById('report-step-2');
-        const step3 = document.getElementById('report-step-3');
-
-        const footer1 = document.getElementById('report-footer-1');
-        const footer2 = document.getElementById('report-footer-2');
-        const footer3 = document.getElementById('report-footer-3');
-
-        document.getElementById('report-next-1').addEventListener('click', () => {
-        step1.style.display = 'none';
-        footer1.style.display = 'none';
-        step2.style.display = 'block';
-        footer2.style.display = 'flex';
-    });
-
-    document.getElementById('report-back-2').addEventListener('click', () => {
-        step2.style.display = 'none';
-        footer2.style.display = 'none';
-        step1.style.display = 'block';
-        footer1.style.display = 'flex';
-    });
-
-    document.getElementById('report-submit-2').addEventListener('click', () => {
-    const targetId = document.getElementById('report_target_id').value;
-    const reasonId = document.getElementById('report_reason').value;
-    const details = document.getElementById('report_details').value;
-    const file = document.getElementById('report_file').files[0];
-
-    if (!reasonId) {
-        alert('Please select a reason for the report.');
-        document.getElementById('report_reason').classList.add('is-invalid');
-        return;
-    }
-
-    const fd = new FormData();
-    fd.append('violation_reason_id', reasonId);
-    fd.append('detail', details);
-    if (file) {
-        fd.append('file', file);
-    }
-
-    // URLを /profile/report/ に修正
-    fetch(`/profile/report/${targetId}`, {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            'Accept': 'application/json'
-        },
-        body: fd
-    })
-    .then(async res => {
-        if (!res.ok) {
-            const errorData = await res.json();
-            console.error('Server Error:', errorData);
-            alert('Failed: ' + (errorData.message || 'Unknown error'));
-            throw new Error('Server error');
-        }
-        return res.json();
-    })
-    .then(data => {
-        console.log('Success!', data);
-        // ステップの切り替え
-        document.getElementById('report-step-2').style.display = 'none';
-        document.getElementById('report-footer-2').style.display = 'none';
-        document.getElementById('report-step-3').style.display = 'block';
-        document.getElementById('report-footer-3').style.display = 'flex';
-    })
-    .catch(error => {
-        console.error('❌ Report error:', error);
-        alert('An error occurred while sending the report.');
-    }); // ← fetchの閉じ
-}); // ← addEventListenerの閉じ
-});
-</script>
 @endsection 
 
 

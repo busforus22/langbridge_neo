@@ -49,4 +49,23 @@ public function destroy($id) {
     return back()->with('success', 'deleted');
 }
 
+public function makeAdmin($id)
+{
+    $user = User::findOrFail($id);
+    $user->is_admin = 1;
+    $user->save();
+
+    return back();
+}
+
+public function removeAdmin($id)
+{
+    $user = User::findOrFail($id);
+    $user->is_admin = 0;
+    $user->save();
+
+    return back();
+}
+
+
 }

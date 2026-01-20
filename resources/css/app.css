@@ -82,4 +82,10 @@ strong {
     font-weight: 700 !important;
 }
 
+.modal-xxl.custom-modal-width,
+.modal-dialog.modal-xxl.custom-modal-width {
+    max-width: 90%;
+    width: 90%;
+}
+
 

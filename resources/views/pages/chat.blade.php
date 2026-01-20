@@ -1,4 +1,14 @@
 @extends('layouts.app')
+@php
+    $urlUserId = request()->id ? Crypt::decrypt(request()->id) : null;
+@endphp
+<style>
+    /* chatページだけnavbarアイコン・ロゴ間隔を広げる */
+    .nav-body {
+        gap: 1.2rem !important;
+    }
+</style>
+<livewire:vocabulary-modal />
 
 {{-- chat screen main template --}}
 @section('content')
@@ -41,7 +51,7 @@
             </div>
             {{-- send messages area--}}
             <form id="chat-form" enctype="multipart/form-data">
-                <input type="hidden" name="to_user_id" id="to_user_id" value="{{ $to_user_id }}">
+                <input type="hidden" name="to_user_id" id="to_user_id" value="{{ $urlUserId ?? $to_user_id }}">
                 <div class="mb-2" style="display:flex;align-items:center;gap:8px;">
                     {{-- upload pictures--}}
                     <label for="image"
@@ -77,7 +87,7 @@
                             <option value="🐈">🐈</option>
                         </datalist>
                         {{-- send button --}}
-                        <button type="submit" class="btn btn-primary"
+                        <button type="submit" class="btn btn-yellow"
                             style="position:absolute;right:0;top:0;width:40px;min-width:40px;height:100%;padding:0;display:flex;align-items:center;justify-content:center;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                 viewBox="0 0 24 24">
@@ -176,9 +186,12 @@
         </div>
     </div>
 </div>
+@endsection
 
+@section('scripts')
 {{-- JavaScript for chat functionality --}}
 <script>
+    const targetMessageId = new URLSearchParams(window.location.search).get('message_id');
     const loadedMessages = new Set();  // * Global set to track loaded message IDs
     let previousMessage = null; // * To track previous message for date comparison
 
@@ -187,7 +200,7 @@
             .then(res => res.json())
     }
 
-    function formatMessage(msg, box, myId, previousMessage) {// format a single message for display
+    function formatMessage(msg, box, myId, previousMessage) { // format a single message for display
         // image tag
         let imgTag = (msg.image_path && msg.image_path !== 'null' && msg.image_path.length > 0)
             ? `<img src='${msg.image_path}' style='max-width:100px;'>`
@@ -224,7 +237,7 @@
 
         // alignment, background color, and name
         let align = msg.user_id == myId ? "right" : "left";
-        let bgColor = msg.user_id == myId ? "#e0f7fa" : "#f1f8e9";
+        let bgColor = msg.user_id == myId ? "#e0f7fa" : "#fff9e1";
 
         let avatarTag;
         if (msg.user_id == myId) {
@@ -244,15 +257,19 @@
          let isEmojiOnly = (!msg.content || msg.content.trim() === "") && msg.emoji;
          let reportTag = msg.user_id != myId && !isEmojiOnly
          ? `<span style='cursor:pointer;color:#d32f2f;font-size:1.0em;' title='Report'
-         onclick='openReportModal(${msg.id}, \`${msg.content}\`, \`${msg.image_path ?? ""}\`)'>
+         onclick='openReportModal(${msg.id}, \`${esc(msg.content)}\`, \`${esc(msg.image_path ?? "")}\`)'>
          <i class="fa-solid fa-flag"></i></span>`
          : "";
  
         // translate icon (always shown)
-        let translateTag =
+        let translateTag = [
             `<span style='cursor:pointer;color:#1976d2;font-size:1.0em;margin-left:4px;' title='Translate'
-            onclick="translateMessage(${msg.id}, \`${msg.content}\`)">
-            <i class="fa-solid fa-language"></i></span>`;
+            onclick="translateMessage(${msg.id}, '${esc(msg.content)}')">
+            <i class="fa-solid fa-language" style="color:#A19E9B;"></i></span>`,
+            `<span style='cursor:pointer;color:#28a745;font-size:1.0em;margin-left:4px;cursor:pointer;' title='Add to Vocabulary'
+            onclick="addToVocabulary(${msg.id}, '${esc(msg.content)}')">
+            <i class='fa fa-plus ' style="color:#ECA133;"></i></span>`
+        ].join("");
 
         // append formatted message to chat box
         box.innerHTML += [
@@ -272,10 +289,10 @@
             
             // translation display area
             msg.content || emojiTag ? `
-            <span id="msg-content-${msg.id}" data-original="${msg.content}" data-translated="false" style="background:${bgColor};padding:4px 8px 2px 8px;border-radius:6px;display:inline-block;">
-            ${msg.content} ${emojiTag}
+            <span id="msg-content-${msg.id}" data-original="${esc(msg.content)}" data-translated="false" style="background:${bgColor};padding:4px 8px 2px 8px;border-radius:6px;display:inline-block;">
+            ${esc(msg.content)} ${emojiTag}
             </span>
-            <div id="msg-translation-${msg.id}" style="color:#1976d2;margin-top:2px;"></div>
+            <div id="msg-translation-${msg.id}" style="color:#6B6B6B;margin-top:2px;"></div>
             ` : "",
             
             `<div id="msg-meta-${msg.id}" style='margin-top:4px;font-size:0.9em;color:gray;'>${readTag} ${timeTag}</div>`,
@@ -318,11 +335,17 @@
                 });
 
                 if (reload) box.scrollTop = box.scrollHeight; // auto scroll to bottom
+                if (targetMessageId) { const el = document.getElementById(`msg-content-${targetMessageId}`); 
+                    if (el) { 
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
+                        el.style.backgroundColor = '#fff3cd'; 
+                    } 
+                }
             });
     }
 
     displayMessages();
-    setInterval(displayMessages, 5000);
+    setInterval(displayMessages, 2000);
 
     const form = document.getElementById('chat-form');
     form.addEventListener('submit', function(e) {
@@ -505,5 +528,57 @@ function translateMessage(messageId, content) {
     });
 }
 
+function addToVocabulary(msgId, content) {
+    // 翻訳内容を取得
+    let translation = '';
+    const translationDiv = document.getElementById(`msg-translation-${msgId}`);
+
+    if (translationDiv && translationDiv.textContent) {
+        translation = translationDiv.textContent;
+    }
+
+    if (translation && translation.trim() !== '') {
+        // 翻訳済みなら即modal
+        document.dispatchEvent(new CustomEvent('openVocabularyModal', { detail: { front: content, back: translation } }));
+    } else {
+        // 未翻訳ならAPI呼び出し→modal
+        fetch('/translate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ text: content })
+        })
+        .then(async res => {
+            if (!res.ok) {
+                const text = await res.text();
+                throw new Error(`Server error ${res.status}: ${text}`);
+            }
+            return res.json();
+        })
+        .then(data => {
+            const translated = data.translated || '';
+            document.dispatchEvent(new CustomEvent('openVocabularyModal', { detail: { front: content, back: translated } }));
+        })
+        .catch(err => {
+            console.error('Error adding vocabulary:', err);
+            alert('翻訳に失敗しました');
+        });
+    }
+}
+
+function esc(str) {
+  return str.replace(/[&<>"']/g, function(match) {
+    switch (match) {
+      case '&': return '&amp;';
+      case '<': return '&lt;';
+      case '>': return '&gt;';
+      case '"': return '&quot;';
+      case "'": return '&#39;'; // または &apos;
+      default: return match;
+    }
+  });
+}
 </script>
 @endsection

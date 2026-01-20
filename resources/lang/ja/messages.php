@@ -4,7 +4,7 @@ return [
     //汎用
     'chat' => 'チャット',
     'search' => '検索',
-    'vocabulary'=>'単語帳',
+    'vocabulary' => '単語帳',
     'login' => 'ログイン',
     'register' => '登録',
     'logout' => 'ログアウト',
@@ -83,5 +83,33 @@ return [
     'incorrect' => '不正解',
     'quiz_result' => '単語クイズ結果',
     'quiz_try_again' => 'もう一度挑戦',
-    'go_list' => '単語リストに戻る'
+    'go_list' => '単語リストに戻る',
+    //設定
+    'user_settings' => '設定',
+    'personal_information' => '個人情報',
+    'personal_information_visibility' => '個人情報の表示設定',
+    'hide_age' => '年齢',
+    'hide_country' => '国',
+    'hide_region' => '地域',
+    'this_information_will_be_visible_on_your_public_profile_if_unchecked' => 'チェックを外すと、これらの情報が公開プロフィールに表示されます。',
+    'search_settings' => '検索設定',
+    'hide_my_profile_from_search_results' => '検索結果に自分のプロフィールを表示しない',
+    'prevent_your_profile_from_appearing_in_user_searches_or_suggested_connections' => 'ユーザー検索やおすすめの接続にプロフィールが表示されないようにします。',
+    'save_changes' => '変更を保存',
+    'if_you_wish_to_delete_your_account_please_click_the_button_below' => 'アカウントを削除したい場合は、以下のボタンをクリックしてください。',
+    'delete_account' => 'アカウントを削除',
+    //プロフィール
+    'profile' => 'プロフィール',
+    'nickname' => 'ニックネーム',
+    'japanese level' => '日本語レベル',
+    'age' => '年齢',
+    'region' => '地域',
+    'bio' => '自己紹介',
+    'handle' => 'ハンドル',
+    'english level' => '英語レベル',
+    'country' => '国',
+    'profile_interests' => '興味・関心',
+    'edit' => '編集',
+    //プロフィール編集
+    'edit_profile' => 'プロフィール編集'
 ];

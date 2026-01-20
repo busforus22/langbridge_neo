@@ -7,13 +7,12 @@
 
             <input type="text" wire:model="front" placeholder="{{ __('messages.front') }}" class="form-control mb-2">
             <input type="text" wire:model="back" placeholder="{{ __('messages.back') }}" class="form-control mb-2">
-            <textarea wire:model="note" placeholder="{{ __('messages.note') . '(' . __('messages.optional') . ')' }}" class="form-control mb-3"></textarea>
+            <textarea wire:model="note" placeholder="{{ __('messages.note') . '(' . __('messages.optional') . ')' }}"
+                class="form-control mb-3"></textarea>
 
             <div class="d-flex justify-content-center gap-3 mt-3">
                 <!-- Add/Edit 切り替えボタン -->
-                <button 
-                    wire:click="save" 
-                    class="btn-red">
+                <button wire:click="save" class="btn-red">
                     {{ $vocabularyId ? __('messages.update') : __('messages.add') }}
                 </button>
 

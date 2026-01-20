@@ -179,7 +179,7 @@
   
   /* hover時の色変化 */
   .interest-card:hover .interest-card-content {
-    background-color: #f9dcd9;
+    background-color: #f2a08a;
   }
   
   /* 選択済み（DBにある）場合 → 初期表示で色付き */
@@ -378,3 +378,221 @@
     cursor: pointer;
     transition: background 0.2s;
 }
+
+main {
+    min-width: 0;
+}
+
+.fa-shield-alt {
+    color:#F5A59E;
+}
+
+.report-search-bar {
+    width: 300px; 
+    padding: 8px 40px 8px 20px; 
+    border: 1px solid #E5E7EB; 
+    border-radius: 9999px; 
+    background-color: #ffffff; 
+    outline: none; 
+    font-size: 14px; 
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* 全体の背景：薄い青と角丸のシミュレート */
+.settings-card-wrapper {
+    background-color: #EDF1F9; 
+    border-radius: 30px;       
+    width: 100%;
+    max-width: 600px;          
+    margin: 20px 0;            
+}
+
+h2, h5 {
+    color: #333;
+}
+/* カードの背景：ウッスーいオレンジ */
+.custom-card {
+    background-color: #fff5e6 !important; 
+    border: none !important;              
+    border-radius: 15px !important;       
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+}
+
+/* チェックボックス */
+ .form-check-input {
+    width: 1.25em;
+    height: 1.25em;
+    margin-top: 0.25em;
+    vertical-align: top;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border: 2px solid #ddd; /* 未チェック時の枠線 */
+    appearance: none;
+    border-radius: 50% !important; 
+    cursor: pointer;
+    transition: background-color .15s ease-in-out, border-color .15s ease-in-out;
+}
+
+/* チェックが入った時の色 */
+ .form-check-input:checked {
+    background-color: #f2a08a !important; /* 画像のチェック色に近い色 */
+    border-color: #f2a08a !important;
+}
+
+/* チェックマーク自体の形を調整 */
+ .form-check-input:checked[type=checkbox] {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M5 10l3 3l6-6'/%3e%3c/svg%3e");
+}
+
+/* フォーカス時の青い光*/
+ .form-check-input:focus {
+    border-color: #f2a08a;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(242, 160, 138, 0.25);
+}
+
+
+/* ホバーした時（色が消えないように固定） */
+.edit-btn:hover, .edit-btn:focus, .edit-btn:active {
+    background-color: #f0b669 !important; 
+    color: white !important;              
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #c98e40;
+}
+
+/* 削除ボタン（Delete Account）を柔らかく */
+.btn-danger {
+    background-color: #fc8787 !important; /* パステル調の優しい赤 */
+    border: none !important;
+    padding: 10px 25px;
+    border-radius: 50px !important; /* カプセル型 */
+    font-weight: bold;
+    transition: opacity 0.2s;
+}
+
+.btn-danger:hover {
+    opacity: 0.8;
+}
+
+/* 横並びのラインも少し柔らかい色に */
+hr {
+    border-top: 2px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+/* チャットページの送信ボタン */
+.btn.btn-yellow:hover,
+.btn.btn-yellow:active {
+    background: #d48c1a !important;
+    color: #fff !important;
+}
+
+.btn.btn-yellow:hover svg,
+.btn.btn-yellow:active svg {
+    opacity: 1 !important;
+    fill: inherit !important;
+}
+.btn.btn-yellow:hover svg path,
+.btn.btn-yellow:active svg path {
+    fill: #fff !important;
+    opacity: 1 !important;
+}
+.cute-input-wrapper {
+    position: relative;
+}
+.login-card { 
+    width: 100%; 
+    max-width: 420px; 
+    background: #ffffffcc; 
+    backdrop-filter: blur(6px); 
+    border-radius: 20px; 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); 
+} 
+.login-input input { 
+    border-radius: 10px; 
+    border: 1px solid #fedaf6; 
+    background-color: #fff; 
+} 
+.login-input input:focus { 
+    border-color: #e4b7e1; 
+    box-shadow: 0 0 0 0.2rem rgba(201, 183, 228, 0.25); 
+} 
+.login-btn { 
+    background-color: #F5A59E; 
+    border: none; 
+    border-radius: 12px; 
+    padding: 10px; 
+    font-weight: bold; 
+    color: white; 
+    transition: 0.2s; 
+} 
+.login-btn:hover { 
+    background-color: #f7b8b2; 
+}
+
+.cute-icon { 
+    position: absolute; 
+    top: 50%; 
+    left: 12px; 
+    transform: translateY(-50%); 
+    color: #f0c0ec; 
+    font-size: 16px; 
+    pointer-events: none; 
+}
+.cute-input {
+    border-radius: 12px;
+    border: 1px solid #e3cce3;
+    background-color: #fff;
+    padding: 10px 12px;
+    font-size: 15px;
+    transition: box-shadow 0.2s ease;
+}
+
+.cute-input:focus {
+    border-color: #c9b7e4;
+    box-shadow: 0 0 0 0.2rem rgba(201, 183, 228, 0.25);
+    outline: none;
+}
+
+.input-group-text {
+    border-radius: 12px 0 0 12px;
+    border: none;
+    background-color: #fff;
+    padding-right: 8px;
+}
+
+
+a {
+    color: #baa0e1; 
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: #9f7ccd; 
+    text-decoration: underline;
+}
+
+.register-input-area { 
+    display: grid; 
+    
+    gap: 16px; 
+    background-color: #EDF1F9; 
+    padding: 16px; 
+    border-radius: 16px; 
+}
+  
+
+  .form-label {
+    font-weight: bold;
+    color: #ECA133;
+    margin-bottom: 6px;
+  }
+  
+  .form-control::placeholder {
+    color: #bab7b7; 
+    opacity: 1;  
+}
+
+[x-cloak] { display: none !important; }
