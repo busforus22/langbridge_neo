@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
 
         // 個別の Seeder を呼び出す
         $this->call([
-            InterestTableSeeder::class,
+            // InterestTableSeeder::class,
             ReportViolationReasonsSeeder::class, // ← 追加
             // UserTableSeeder::class, // 必要ならコメントアウト解除
         ]);
