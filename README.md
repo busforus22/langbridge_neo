@@ -1,59 +1,46 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# プロジェクト　Langbridge
+    チームメンバー　Y氏、H氏、Busf
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Busfの担当領域：
 
-## About Laravel
+    ・ER図の作成
+        https://dbdiagram.io/d/69022ef36735e11170537bd6
+    ・Vocabulary機能実装
+        Model
+            app\Models\Vocabulary.php
+            app\Models\Quiz.php
+            app\Models\DailyStatistic.php
+        Controller
+            app\Http\Controllers\VocabularyController.php
+            app\Http\Controllers\QuizController.php
+        Service
+            app\Services\VocabularyStatusService.php
+        Blade
+            resources\views\pages\quiz
+            resources\views\pages\vocabulary
+        Modal
+            app\Livewire\VocabularyModal.php
+            resources\views\livewire\vocabulary-modal.blade.php
+            resources\js\vocabulary-modal.js
+    ・ロケール設定
+            app\Http\Middleware\SetLocale.php
+            resources\lang\en\messages.php
+            resources\lang\ja\messages.php
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## ER図について
+    要件定義中、ページごとの要素を考えながらER図を作成。
+    ただし、中間報告会での指摘を受けて大幅に要件が削られ新しい要素（Vocabulary機能）が加わったため、大きな改修をする羽目になった。
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+    つまずいた部分
+    ・もともと年齢をintで格納するageカラムを想定していたが、経年で年齢が変化することを失念していたことに気づいていなかった。
+    　birth_dateをユーザにフォームで登録させそこから年齢を計算するロジックをbladeに組み込む実装に変更。
+    ・usersテーブルのカラムが多くなりすぎる懸念から、プロフィール編集ページで編集する情報を表すカラムをprofilesテーブルに切り出した。
+    　これのせいで他のメンバーがusersから参照すればいいのかprofilesから参照すればよいのか実装上で迷う場面が頻発していた。
+    　アナウンスが甘かったのが悪かったのか、そもそもこの垂直分割がナンセンスだったのか判断がつかない。
+    　初心者の開発ということで、シンプルにusersテーブルにすべてのカラムをまとめてもよかったのかもしれない。
+    　個人的には、いちおう意味のある分割であったつもりなので間違ってなかったと信じたいが...
+    ・Soft Deleteの実装有無について要件定義の時点で考えておらず、
+    　usersテーブルとprofilesテーブルにあとからdeleted_atを加えることになった。
+    ・
+## Vocabulary機能について
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

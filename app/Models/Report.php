@@ -26,6 +26,9 @@ class Report extends Model
         return $this->belongsTo(User::class, 'reporter_id');
     }
 
+    /*
+    ポリモーフィックリレーション。こちらが多になる一対多のリレーションを複数のテーブルに対して持つ
+    */
     public function reportedContent(){
         return $this->morphTo()->withTrashed();
     }
@@ -41,11 +44,11 @@ class Report extends Model
         ];
     
         return $map[$this->action_status] ?? 'Pending';
-}
+    }
 
-public function message()
-{
-    return $this->belongsTo(Message::class, 'reported_content_id'); 
-}
+    public function message()
+    {
+        return $this->belongsTo(Message::class, 'reported_content_id');
+    }
 
 }
