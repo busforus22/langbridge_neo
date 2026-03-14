@@ -20,11 +20,13 @@ class DailyStatistic extends Model
         'attempt_number',
     ];
 
+    //文字列で返さないようPHPの適切な型に変換
     protected $casts = [
         'date' => 'date',
         'accuracy' => 'float'
     ];
 
+    //Userと一対多の関係　User has many DailyStatistics
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -133,6 +133,18 @@ class User extends Authenticatable
           abort(403);
       }
     }
+
+
+    さらに
+    ② routes/web.php を変更
+    Route::get('show/{user}', [ProfileController::class, 'show'])->name('show');
+
+    ③ ProfileController を変更
+    // 変更前
+    public function show($user_id) { ... }
+
+    // 変更後
+    public function show(User $user) { ... } // 自動でモデルが注入される
     */
 
 }

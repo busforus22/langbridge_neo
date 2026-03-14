@@ -21,7 +21,7 @@ class Report extends Model
         'updated_at',
     ];
 
-
+    //Userと一対多の関係　User has many Reports
     public function reporter(){
         return $this->belongsTo(User::class, 'reporter_id');
     }
@@ -33,6 +33,7 @@ class Report extends Model
         return $this->morphTo()->withTrashed();
     }
 
+    //action_statusのレベルの段階をここで定義
     public function nextActionLabel()
     {
         $map = [
@@ -46,6 +47,7 @@ class Report extends Model
         return $map[$this->action_status] ?? 'Pending';
     }
 
+    //Messageと一対多の関係　Message has many Reports これ違うかも。仕様上一対一にしかならないし、morphToをつかったほうがよいのでは
     public function message()
     {
         return $this->belongsTo(Message::class, 'reported_content_id');
