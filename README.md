@@ -44,3 +44,6 @@
     ・
 ## Vocabulary機能について
 
+## 修正履歴
+20260317 ChatControllerコードリファクタリング、chat.bladeも修正しuserの本名が表示されてしまうミスを修正
+
