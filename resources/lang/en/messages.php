@@ -44,6 +44,9 @@ return [
         '15' => 'Pets & Animals',
         '16' => 'Books & Literature'
     ],
+    //チャット
+    'senderror' => 'please enter a message, emoji, or image',
+    'partnererror' => 'chat partner is not selected',
     //検索
     'interest_categories' => 'Interest Tags',
     'no_profile' => 'No matching users found.',

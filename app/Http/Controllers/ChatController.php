@@ -70,13 +70,13 @@ class ChatController extends Controller
             !$request->filled('emoji') &&
             !$request->hasFile('image')
         ) {
-            return response()->json(['error' => 'please enter a message, emoji, or image'], 422);
+            return response()->json(['error' => '(__messages.senderror)'], 422);
         }
 
         // if to_user_id is empty, return error
         $to_user_id = $request->input('to_user_id');
         if (empty($to_user_id)) {
-            return response()->json(['error' => 'chat partner is not selected'], 422);
+            return response()->json(['error' => '(__messages.partnererror)'], 422);
         }
 
         $message = new Message();
