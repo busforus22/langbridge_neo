@@ -11,7 +11,7 @@
             <h1>{{__('messages.vocabulary_list')}}</h1>
         </div>
         <div class="col-auto">
-            <a href="{{ route('quiz.settings')}}" class="btn-yellow">{{__('messages.vocabulary_quiz')}}</a> <!--add the route to vocabulary quiz later-->
+            <a href="{{ route('quiz.settings')}}" class="btn-yellow">{{__('messages.vocabulary_quiz')}}</a>
         </div>
         <div class="col-auto">
             <button type="button" class="btn-red" onclick="document.dispatchEvent(new CustomEvent('openVocabularyModal'))">{{__('messages.add_vocabulary')}}</button>

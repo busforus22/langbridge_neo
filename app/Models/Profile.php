@@ -32,9 +32,13 @@ class Profile extends Model
     //     parent::boot();
     // }
 
+    //主キーをuser_idとする（デフォルトのidカラムがないため）
     protected $primaryKey = 'user_id';
+    //主キーがauto_incrementではない
     public $incrementing = false;
+    //主キーのタイプがint
     protected $keyType = 'int';
+    //デフォ値の指定
     protected $attributes = [
         'hidden' => true,
         'age_hidden' => true,
@@ -42,9 +46,7 @@ class Profile extends Model
         'region_hidden' => true,
     ];
 
-    /**
-     * 🔗 Which user this profile belongs to (one-to-one relationship)
-     */
+    //handleの自動生成
     protected static function boot()
     {
         parent::boot();
@@ -59,25 +61,17 @@ class Profile extends Model
         });
     }
 
-
-    /**
-     *  Which user this profile belongs to (one-to-one relationship)
-     */
+    //Userと一対一の関係　User has a Profile
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-
-    /**
-     *  Get the interest categories of this profile (retrieved via User)
-     */
+    //$profile->interests()でUserに紐づくInterestを取得できる
     public function interests()
     {
         return $this->user ? $this->user->interests : collect();
     }
-
-
 
     public const LEVEL_MAP = [
         'Beginner' => 1,

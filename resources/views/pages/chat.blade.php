@@ -33,7 +33,7 @@
                             @else
                             <i class="fas fa-user-circle" style="font-size:32px;color:#bbb;"></i>
                             @endif
-                            <span>{{ $user->name }}</span>
+                            <span>{{ $user->profile->nickname }}</span>
                         </button>
                         @endforeach
                     </div>
@@ -44,7 +44,7 @@
         {{-- right side: chat main body --}}
         <div style="flex:1;">
             {{-- chat room title --}}
-            <h5>Chat with {{ $toUser->name ?? '...' }}</h5>
+            <h5>Chat with {{ $toUser->profile->nickname ?? '...' }}</h5>
             {{-- display message area --}}
             <div id="chat-box"
                 style="height:400px;overflow-y:scroll;border:1px solid #ccc;padding:10px;margin-bottom:10px;">

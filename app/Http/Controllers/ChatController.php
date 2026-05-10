@@ -18,28 +18,28 @@ class ChatController extends Controller
     {
         $user_id = Auth::id();
 
+        //チャットしたことのある相手を抽出
         $users = User::where('users.id', '!=', $user_id)
-            ->join('messages', function ($join) use ($user_id) {
-                $join->on('users.id', '=', 'messages.user_id')
-                    ->orOn('users.id', '=', 'messages.to_user_id');
-            })
-            ->where(function ($q) use ($user_id) {
-                $q->where('messages.user_id', $user_id)
+                ->join('messages', function ($join) use ($user_id) {
+                    $join->on('users.id', '=', 'messages.user_id')
+                        ->orOn('users.id', '=', 'messages.to_user_id');
+                })
+                ->join('profiles', 'profiles.user_id', '=', 'users.id')
+                ->where(function ($q) use ($user_id) {
+                    $q->where('messages.user_id', $user_id)
                     ->orWhere('messages.to_user_id', $user_id);
-            })
-            ->select(
-                'users.id',
-                'users.name',
-                'users.email',
-                DB::raw('MAX(messages.sent_at) as last_chat')
-            )
-            ->groupBy('users.id', 'users.name', 'users.email')
-            ->orderByDesc('last_chat')
-            ->get();
-
-        $toUser = null;
+                })
+                ->select(
+                    'users.id',
+                    'profiles.nickname',
+                    DB::raw('MAX(messages.sent_at) as last_chat')
+                )
+                ->groupBy('users.id', 'profiles.nickname')
+                ->orderByDesc('last_chat')
+                ->get();
 
         $to_user_id = $request->input('to_user_id');
+
 
         if ($to_user_id) {
             try {
@@ -49,35 +49,14 @@ class ChatController extends Controller
             }
         }
 
-        // hiddenユーザーでも、過去にチャット履歴があれば非hiddenユーザーから再開できる
-        if ($to_user_id) {
-            $toUser = User::with('profile')->find($to_user_id);
-            $exists = $toUser && $toUser->profile;
-            $isHidden =  $toUser->profile->hidden;
+        $toUser = $to_user_id
+                    ? User::with('profile:user_id,nickname')
+                        ->select('id')
+                        ->find($to_user_id)
+                    : null;
 
-            // hiddenユーザーとのチャットアクセス権限チェック
-            if ($exists) {
-                // 相手がhiddenの場合、チャット履歴があれば会話可能
-                if ($isHidden) {
-                    // チャット履歴があるか確認
-                    $hasHistory = Message::where(function ($q) use ($user_id, $to_user_id) {
-                        $q->where('user_id', $user_id)->where('to_user_id', $to_user_id);
-                    })->orWhere(function ($q) use ($user_id, $to_user_id) {
-                        $q->where('user_id', $to_user_id)->where('to_user_id', $user_id);
-                    })->exists();
-
-                    if (!$hasHistory) {
-                        abort(403, 'This user is not available for chat (no history).');
-                    }
-                }
-            } else {
-                // user doesn't exist or profile missing
-                abort(403, 'This user is not available for chat (user or profile missing).');
-            }
-        }
-
-        // checks passed, show chat page
         $violationReasons = ReportViolationReason::where('category', 'chat')->get();
+
         return view('pages.chat', compact('users', 'to_user_id', 'toUser', 'violationReasons'));
     }
 
@@ -91,13 +70,13 @@ class ChatController extends Controller
             !$request->filled('emoji') &&
             !$request->hasFile('image')
         ) {
-            return response()->json(['error' => 'please enter a message, emoji, or image'], 422);
+            return response()->json(['error' => '(__messages.senderror)'], 422);
         }
 
         // if to_user_id is empty, return error
         $to_user_id = $request->input('to_user_id');
         if (empty($to_user_id)) {
-            return response()->json(['error' => 'chat partner is not selected'], 422);
+            return response()->json(['error' => '(__messages.partnererror)'], 422);
         }
 
         $message = new Message();
