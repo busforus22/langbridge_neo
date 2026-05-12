@@ -67,10 +67,14 @@ class HomeController extends Controller
             ->get();
 
         // ストリーク用データ取得
+        $userTimezone = $user->timezone ?? 'UTC';
+
         $dates = DailyStatistic::where('user_id', $user->id)
             ->orderBy('date')
-            ->pluck('date')
-            ->map(fn($date) => Carbon::parse($date)->toDateString())
+            ->get(['date'])
+            ->map(fn($item) => Carbon::parse($item->date, 'UTC')->setTimezone($userTimezone)->toDateString())
+            ->unique()
+            ->values()
             ->toArray();
 
         // ストリーク計算
@@ -88,7 +92,7 @@ class HomeController extends Controller
         }
 
         // 今月のカレンダー用配列
-        $today = Carbon::today();
+        $today = Carbon::now($userTimezone)->startOfDay();
         $firstDay = $today->copy()->startOfMonth();
         $lastDay = $today->copy()->endOfMonth();
         $calendar = [];

@@ -85,7 +85,7 @@
                     <div class="suggested-card">
                         @if($user->profile->avatar)
                         <a href="{{ route('profile.show', ['user_id' => encrypt($user->id)]) }}">
-                            <img src="{{ $user->profile->avatar }}" alt="Avatar" class="avatar rounded-circle">
+                            <img src="{{ $user->profile->avatar }}" alt="Avatar" class="avatar rounded-circle mx-auto">
                         </a>
                         @else
                         <a href="{{ route('profile.show', ['user_id' => encrypt($user->id)]) }}">

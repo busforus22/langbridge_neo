@@ -42,6 +42,7 @@
     ・Soft Deleteの実装有無について要件定義の時点で考えておらず、
     　usersテーブルとprofilesテーブルにあとからdeleted_atを加えることになった。
 ## Vocabulary機能について
+    
 
 ## 修正履歴
 20260317 ChatControllerコードリファクタリング、chat.bladeも修正しuserの本名が表示されてしまうミスを修正
