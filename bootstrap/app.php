@@ -13,6 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        //すべてのプロキシを信頼する
+        $middleware->trustProxies(at:'*');
+        
         // ミドルウェアのエイリアス登録 
         $middleware->alias([ 
             'is_admin' => IsAdmin::class, 
