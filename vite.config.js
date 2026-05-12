@@ -13,7 +13,8 @@ export default defineConfig({
                 "resources/css/home.css",
                 "resources/js/vocabulary-modal.js",
                 "resources/js/quiz.js",
-                "resources/js/timezone.js"
+                "resources/js/timezone.js",
+                "resources/js/report.js"
             ],
             refresh: true,
         }),
