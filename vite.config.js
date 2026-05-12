@@ -11,6 +11,7 @@ export default defineConfig({
                 "resources/css/style.css",
                 "resources/js/translate.js",
                 "resources/css/home.css",
+                "resources/js/vocabulary-modal.js"
             ],
             refresh: true,
         }),
