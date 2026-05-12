@@ -14,7 +14,8 @@ export default defineConfig({
                 "resources/js/vocabulary-modal.js",
                 "resources/js/quiz.js",
                 "resources/js/timezone.js",
-                "resources/js/report.js"
+                "resources/js/report.js",
+                "resources/css/profile.css"
             ],
             refresh: true,
         }),
