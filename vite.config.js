@@ -11,7 +11,9 @@ export default defineConfig({
                 "resources/css/style.css",
                 "resources/js/translate.js",
                 "resources/css/home.css",
-                "resources/js/vocabulary-modal.js"
+                "resources/js/vocabulary-modal.js",
+                "resources/js/quiz.js",
+                "resources/js/timezone.js"
             ],
             refresh: true,
         }),
