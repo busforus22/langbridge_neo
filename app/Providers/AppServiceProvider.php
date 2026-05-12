@@ -19,6 +19,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // 本番環境（Railwayなど）の場合のみHTTPSを強制
+        if (config('app.env') === 'production' || config('app.env') === 'staging') {
+            URL::forceScheme('https');
+        }
     }
+
 }
